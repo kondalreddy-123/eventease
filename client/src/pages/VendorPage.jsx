@@ -313,17 +313,19 @@ export default function VendorPage({ setActivePage }) {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => openEditModal(ven)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    aria-label={`Edit vendor: ${ven.name}`}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     title="Edit Vendor"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => deleteVendor(ven.id)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    aria-label={`Remove vendor: ${ven.name}`}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     title="Remove Vendor"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -343,9 +345,10 @@ export default function VendorPage({ setActivePage }) {
               </h3>
               <button
                 onClick={() => setCompareModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                aria-label="Close comparison modal"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none rounded-lg p-1"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
@@ -399,9 +402,10 @@ export default function VendorPage({ setActivePage }) {
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                aria-label="Close vendor details modal"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none rounded-lg p-1"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 

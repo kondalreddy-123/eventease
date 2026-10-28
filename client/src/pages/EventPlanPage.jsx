@@ -86,17 +86,20 @@ export default function EventPlanPage({ setActivePage }) {
           <button
             onClick={regeneratePlan}
             disabled={aiGenerating}
-            className="px-4 py-2 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold text-xs flex items-center gap-2 transition-all hover:scale-102 disabled:opacity-60"
+            aria-label={aiGenerating ? 'Regenerating AI event plan' : 'Regenerate event plan with Gemini AI'}
+            aria-busy={aiGenerating}
+            className="px-4 py-2 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold text-xs flex items-center gap-2 transition-all hover:scale-102 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
           >
-            <RotateCw className={`w-3.5 h-3.5 ${aiGenerating ? 'animate-spin' : ''}`} />
+            <RotateCw className={`w-3.5 h-3.5 ${aiGenerating ? 'animate-spin' : ''}`} aria-hidden="true" />
             <span>{aiGenerating ? 'Regenerating...' : 'Regenerate Plan'}</span>
           </button>
 
           <button
             onClick={handlePrint}
-            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center gap-2 transition-colors"
+            aria-label="Print event plan or export as PDF"
+            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs flex items-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Print / Export PDF</span>
           </button>
         </div>
@@ -106,7 +109,7 @@ export default function EventPlanPage({ setActivePage }) {
       <TiltCard className="p-6 sm:p-8 bg-gradient-to-br from-purple-900/15 via-indigo-900/10 to-pink-900/15 border border-purple-500/30 shadow-xl backdrop-blur-xl">
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
-            <Palette className="w-4 h-4" /> Recommended Visual Theme
+            <Palette className="w-4 h-4" aria-hidden="true" /> Recommended Visual Theme
           </div>
           <h2 className="text-2xl font-black text-slate-900 dark:text-white">
             {theme.title || 'Festive Radiance'}
@@ -132,19 +135,21 @@ export default function EventPlanPage({ setActivePage }) {
                     key={idx}
                     type="button"
                     onClick={() => copyToClipboard(hex)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:scale-105 transition-transform group"
+                    aria-label={`Copy color code ${hex} to clipboard`}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:scale-105 transition-transform group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                   >
                     <div
                       className="w-5 h-5 rounded-full border border-black/10 shadow-inner"
                       style={{ backgroundColor: hex }}
+                      aria-hidden="true"
                     />
                     <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200 group-hover:text-purple-600">
                       {hex}
                     </span>
                     {copiedHex === hex ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-500" />
+                      <Check className="w-3.5 h-3.5 text-emerald-500" aria-hidden="true" />
                     ) : (
-                      <Copy className="w-3 h-3 text-slate-600 dark:text-slate-400 group-hover:text-purple-600" />
+                      <Copy className="w-3 h-3 text-slate-600 dark:text-slate-400 group-hover:text-purple-600" aria-hidden="true" />
                     )}
                   </button>
                 ))}
@@ -218,21 +223,22 @@ export default function EventPlanPage({ setActivePage }) {
           </div>
           <button
             onClick={() => setActivePage('budget')}
-            className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1"
+            aria-label="Open Budget Manager page"
+            className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded"
           >
-            Open Budget Manager <ArrowRight className="w-3.5 h-3.5" />
+            Open Budget Manager <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs" aria-label="Suggested budget allocation breakdown table">
             <thead>
               <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
-                <th className="py-2.5 px-3">Expense Category</th>
-                <th className="py-2.5 px-3">Allocation</th>
-                <th className="py-2.5 px-3">%</th>
-                <th className="py-2.5 px-3">Reason / Context</th>
-                <th className="py-2.5 px-3">Cost-Saving Tip</th>
+                <th scope="col" className="py-2.5 px-3">Expense Category</th>
+                <th scope="col" className="py-2.5 px-3">Allocation</th>
+                <th scope="col" className="py-2.5 px-3">%</th>
+                <th scope="col" className="py-2.5 px-3">Reason / Context</th>
+                <th scope="col" className="py-2.5 px-3">Cost-Saving Tip</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -266,13 +272,14 @@ export default function EventPlanPage({ setActivePage }) {
         <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
-              <Calendar className="w-4 h-4" /> Preparation Milestones
+              <Calendar className="w-4 h-4" aria-hidden="true" /> Preparation Milestones
             </div>
             <button
               onClick={() => setActivePage('timeline')}
-              className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1"
+              aria-label="Open Timeline view"
+              className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 rounded"
             >
-              Timeline View <ArrowRight className="w-3.5 h-3.5" />
+              Timeline View <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
 

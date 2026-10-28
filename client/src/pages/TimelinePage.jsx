@@ -257,7 +257,8 @@ export default function TimelinePage({ setActivePage }) {
                           type="checkbox"
                           checked={t.completed}
                           onChange={(e) => updateTask(t.id, { completed: e.target.checked })}
-                          className="mt-1 w-4 h-4 accent-purple-600 rounded cursor-pointer"
+                          aria-label={`Mark task "${t.title}" as ${t.completed ? 'incomplete' : 'complete'}`}
+                          className="mt-1 w-4 h-4 accent-purple-600 rounded focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
                         />
                         <div>
                           <p className={`text-xs font-semibold transition-all ${
@@ -269,7 +270,7 @@ export default function TimelinePage({ setActivePage }) {
                           </p>
                           <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-600 dark:text-slate-400 mt-1">
                             <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-slate-600 dark:text-slate-400" /> Due: {t.dueDate}
+                              <Clock className="w-3 h-3 text-slate-600 dark:text-slate-400" aria-hidden="true" /> Due: {t.dueDate}
                             </span>
                             {t.assignedTo && (
                               <span>• Assigned: {t.assignedTo}</span>
@@ -291,17 +292,19 @@ export default function TimelinePage({ setActivePage }) {
                         </span>
                         <button
                           onClick={() => openEditModal(t)}
-                          className="p-1 text-slate-400 hover:text-purple-600 transition-colors"
+                          aria-label={`Edit task: ${t.title}`}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-colors"
                           title="Edit Task"
                         >
-                          <Edit2 className="w-3.5 h-3.5" />
+                          <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
                         <button
                           onClick={() => deleteTask(t.id)}
-                          className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
+                          aria-label={`Delete task: ${t.title}`}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-colors"
                           title="Delete Task"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
                       </div>
                     </div>

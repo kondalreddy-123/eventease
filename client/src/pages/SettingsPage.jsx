@@ -126,10 +126,11 @@ export default function SettingsPage({ setActivePage }) {
 
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           <div>
-            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+            <label htmlFor="setting-event-name" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
               Event Title *
             </label>
             <input
+              id="setting-event-name"
               type="text"
               required
               value={name}
@@ -140,10 +141,11 @@ export default function SettingsPage({ setActivePage }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-event-date" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Event Date *
               </label>
               <input
+                id="setting-event-date"
                 type="date"
                 required
                 value={eventDate}
@@ -153,10 +155,11 @@ export default function SettingsPage({ setActivePage }) {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-location" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Location *
               </label>
               <input
+                id="setting-location"
                 type="text"
                 required
                 value={location}
@@ -168,10 +171,11 @@ export default function SettingsPage({ setActivePage }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-guest-count" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Expected Guests
               </label>
               <input
+                id="setting-guest-count"
                 type="number"
                 min="5"
                 required
@@ -182,10 +186,11 @@ export default function SettingsPage({ setActivePage }) {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-budget" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Total Planned Budget (INR ₹)
               </label>
               <input
+                id="setting-budget"
                 type="number"
                 min="10000"
                 step="5000"
@@ -199,10 +204,11 @@ export default function SettingsPage({ setActivePage }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-theme" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Theme / Decor Vibe
               </label>
               <input
+                id="setting-theme"
                 type="text"
                 value={theme}
                 onChange={(e) => setTheme(e.target.value)}
@@ -211,10 +217,11 @@ export default function SettingsPage({ setActivePage }) {
             </div>
 
             <div>
-              <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="setting-food" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Food / Catering Notes
               </label>
               <input
+                id="setting-food"
                 type="text"
                 value={foodPreference}
                 onChange={(e) => setFoodPreference(e.target.value)}
@@ -227,9 +234,11 @@ export default function SettingsPage({ setActivePage }) {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-500/20 transition-all flex items-center gap-2"
+              aria-label="Save changes to event settings"
+              aria-busy={loading}
+              className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-500/20 transition-all flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:opacity-60"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-4 h-4" aria-hidden="true" />
               <span>{loading ? 'Saving...' : 'Save Settings'}</span>
             </button>
           </div>

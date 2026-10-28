@@ -7,7 +7,8 @@
     "start": "node server/src/server.js",
     "server": "cd server && npm start",
     "client": "cd client && npm run dev",
-    "build": "cd client && npm run build"
+    "build": "cd client && npm run build",
+    "test": "cd server && npm test"
   },
   "keywords": ["event-planning", "gemini-ai", "react", "recharts", "threejs", "budget-manager", "timeline"],
   "author": "EventEase AI Team",

@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
 
+import { sanitizeString, isValidEmail, isValidPassword } from '../utils/sanitize.js';
+
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'eventease-secret-key-2026';
 
@@ -16,7 +18,21 @@ router.post('/register', (req, res) => {
     return res.status(400).json({ message: 'Name, email, and password are required.' });
   }
 
-  const existing = db.findUserByEmail(email);
+  const cleanName = sanitizeString(name);
+  if (!cleanName || cleanName.length < 2) {
+    return res.status(400).json({ message: 'Please provide a valid name (at least 2 characters).' });
+  }
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ message: 'Please provide a valid email address.' });
+  }
+
+  if (!isValidPassword(password)) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const existing = db.findUserByEmail(cleanEmail);
   if (existing) {
     return res.status(400).json({ message: 'An account with this email already exists.' });
   }
@@ -26,8 +42,8 @@ router.post('/register', (req, res) => {
 
   const newUser = {
     id: `user-${uuidv4().slice(0, 8)}`,
-    name: name.trim(),
-    email: email.trim().toLowerCase(),
+    name: cleanName,
+    email: cleanEmail,
     password: hashedPassword,
     role: 'user',
     currency: 'INR',

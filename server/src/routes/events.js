@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
 import { generateFallbackEventPlan } from '../services/geminiService.js';
+import { sanitizeString, validatePositiveNumber } from '../utils/sanitize.js';
 
 const router = express.Router();
 router.use(requireAuth);
@@ -77,39 +78,50 @@ router.post('/', (req, res) => {
     return res.status(400).json({ message: 'Event name, date, and location are required.' });
   }
 
+  const cleanName = sanitizeString(name);
+  const cleanDescription = sanitizeString(description);
+  const cleanLocation = sanitizeString(location);
+  const cleanTheme = sanitizeString(theme);
+  const cleanFood = sanitizeString(foodPreference);
+  const cleanCultural = sanitizeString(culturalPreference);
+  const cleanVenue = sanitizeString(venuePreference);
+  const cleanReqs = sanitizeString(specialRequirements);
+  const cleanGuestCount = validatePositiveNumber(guestCount, 100);
+  const cleanTotalBudget = validatePositiveNumber(totalBudget, 500000);
+
   const eventId = `event-${uuidv4().slice(0, 8)}`;
   
   // Create preliminary plan
   const plan = generateFallbackEventPlan({
-    name,
-    eventType,
-    description,
+    name: cleanName,
+    eventType: sanitizeString(eventType) || 'Wedding',
+    description: cleanDescription,
     eventDate,
-    location,
-    guestCount: Number(guestCount) || 100,
-    totalBudget: Number(totalBudget) || 500000,
-    theme,
-    foodPreference,
-    culturalPreference,
-    venuePreference,
-    specialRequirements
+    location: cleanLocation,
+    guestCount: cleanGuestCount,
+    totalBudget: cleanTotalBudget,
+    theme: cleanTheme,
+    foodPreference: cleanFood,
+    culturalPreference: cleanCultural,
+    venuePreference: cleanVenue,
+    specialRequirements: cleanReqs
   });
 
   const newEvent = {
     id: eventId,
     userId: req.user.id,
-    name: name.trim(),
-    eventType,
-    description: description.trim(),
+    name: cleanName,
+    eventType: sanitizeString(eventType) || 'Wedding',
+    description: cleanDescription,
     eventDate,
-    location: location.trim(),
-    guestCount: Number(guestCount) || 100,
-    totalBudget: Number(totalBudget) || 500000,
-    theme: theme.trim(),
-    foodPreference: foodPreference.trim(),
-    culturalPreference: culturalPreference.trim(),
-    venuePreference: venuePreference.trim(),
-    specialRequirements: specialRequirements.trim(),
+    location: cleanLocation,
+    guestCount: cleanGuestCount,
+    totalBudget: cleanTotalBudget,
+    theme: cleanTheme,
+    foodPreference: cleanFood,
+    culturalPreference: cleanCultural,
+    venuePreference: cleanVenue,
+    specialRequirements: cleanReqs,
     aiPlan: plan,
     createdAt: new Date().toISOString()
   };
@@ -222,12 +234,12 @@ router.post('/:id/expenses', (req, res) => {
   const newExpense = {
     id: `exp-${uuidv4().slice(0, 8)}`,
     eventId: req.params.id,
-    title: title.trim(),
-    category,
-    estimatedAmount: Number(estimatedAmount) || 0,
-    actualAmount: Number(actualAmount) || 0,
-    status,
-    notes: notes.trim(),
+    title: sanitizeString(title),
+    category: sanitizeString(category),
+    estimatedAmount: validatePositiveNumber(estimatedAmount, 0),
+    actualAmount: validatePositiveNumber(actualAmount, 0),
+    status: sanitizeString(status) || 'Unpaid',
+    notes: sanitizeString(notes),
     createdAt: new Date().toISOString()
   };
 
@@ -265,14 +277,14 @@ router.post('/:id/tasks', (req, res) => {
   const newTask = {
     id: `task-${uuidv4().slice(0, 8)}`,
     eventId: req.params.id,
-    title: title.trim(),
-    category,
-    milestone,
+    title: sanitizeString(title),
+    category: sanitizeString(category) || 'General',
+    milestone: sanitizeString(milestone) || 'Preparation',
     dueDate: dueDate || event.eventDate,
-    priority,
+    priority: sanitizeString(priority) || 'Medium',
     completed: false,
-    assignedTo: assignedTo.trim() || 'Lead Planner',
-    notes: notes.trim()
+    assignedTo: sanitizeString(assignedTo) || 'Lead Planner',
+    notes: sanitizeString(notes)
   };
 
   db.addTask(newTask);
@@ -311,18 +323,18 @@ router.post('/:id/vendors', (req, res) => {
   const newVendor = {
     id: `ven-${uuidv4().slice(0, 8)}`,
     eventId: req.params.id,
-    name: name.trim(),
-    category,
-    contactPerson: (contactPerson || '').trim(),
-    phone: (phone || '').trim(),
-    email: (email || '').trim(),
-    quotedPrice: Number(quotedPrice) || 0,
-    agreedPrice: Number(agreedPrice) || 0,
-    paymentStatus,
-    bookingStatus,
-    rating: Number(rating) || 4.5,
-    services: (services || '').trim(),
-    notes: (notes || '').trim(),
+    name: sanitizeString(name),
+    category: sanitizeString(category),
+    contactPerson: sanitizeString(contactPerson),
+    phone: sanitizeString(phone),
+    email: sanitizeString(email),
+    quotedPrice: validatePositiveNumber(quotedPrice, 0),
+    agreedPrice: validatePositiveNumber(agreedPrice, 0),
+    paymentStatus: sanitizeString(paymentStatus) || 'Unpaid',
+    bookingStatus: sanitizeString(bookingStatus) || 'Inquiry',
+    rating: validatePositiveNumber(rating, 4.5),
+    services: sanitizeString(services),
+    notes: sanitizeString(notes),
     isSample: false
   };
 

@@ -431,17 +431,19 @@ export default function BudgetPage({ setActivePage }) {
                     <td className="py-3 px-3 text-right whitespace-nowrap">
                       <button
                         onClick={() => openEditModal(exp)}
-                        className="p-1 text-slate-400 hover:text-purple-600 transition-colors mr-1"
+                        aria-label={`Edit expense item ${exp.title}`}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-colors mr-1"
                         title="Edit Expense"
                       >
-                        <Edit2 className="w-3.5 h-3.5" />
+                        <Edit2 className="w-3.5 h-3.5" aria-hidden="true" />
                       </button>
                       <button
                         onClick={() => deleteExpense(exp.id)}
-                        className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
+                        aria-label={`Delete expense item ${exp.title}`}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-colors"
                         title="Delete Expense"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                       </button>
                     </td>
                   </tr>
@@ -462,9 +464,10 @@ export default function BudgetPage({ setActivePage }) {
               </h3>
               <button
                 onClick={() => setModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                aria-label="Close expense modal"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none rounded-lg p-1"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 

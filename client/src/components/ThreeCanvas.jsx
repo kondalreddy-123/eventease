@@ -156,9 +156,19 @@ export default function ThreeCanvas({ className = '', interactive = true }) {
     let animationFrameId;
     let clock = new THREE.Clock();
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      if (document.hidden) return; // Save CPU/GPU power when user switches tabs
       const elapsedTime = clock.getElapsedTime();
+
+      if (prefersReducedMotion) {
+        // Minimal static rendering for users with vestibular motion sensitivity
+        group.rotation.y = 0.1;
+        renderer.render(scene, camera);
+        return;
+      }
 
       // Smooth camera sway following mouse
       targetX += (mouseX * 4 - targetX) * 0.05;
@@ -201,6 +211,8 @@ export default function ThreeCanvas({ className = '', interactive = true }) {
   return (
     <div
       ref={mountRef}
+      role="presentation"
+      aria-hidden="true"
       className={`relative w-full h-full overflow-hidden pointer-events-none select-none ${className}`}
       style={{ minHeight: '320px' }}
     />

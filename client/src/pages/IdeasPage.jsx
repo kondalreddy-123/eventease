@@ -87,29 +87,38 @@ export default function IdeasPage({ setActivePage }) {
         <button
           onClick={() => fetchIdeas(activeTopic)}
           disabled={loading}
-          className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-500/20 transition-all hover:scale-105 flex items-center gap-2 self-start md:self-auto disabled:opacity-60"
+          aria-label={loading ? 'Generating creative ideas with Gemini AI' : 'Regenerate creative ideas with Gemini AI'}
+          aria-busy={loading}
+          className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-500/20 transition-all hover:scale-105 flex items-center gap-2 self-start md:self-auto disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
         >
-          <RotateCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+          <RotateCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} aria-hidden="true" />
           <span>{loading ? 'Consulting Gemini...' : 'Regenerate Ideas'}</span>
         </button>
       </div>
 
       {/* Topic Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div 
+        role="tablist" 
+        aria-label="Filter ideas by category" 
+        className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
+      >
         {TOPICS.map((topic) => {
           const Icon = topic.icon;
           const isSelected = activeTopic === topic.id;
           return (
             <button
               key={topic.id}
+              role="tab"
+              aria-selected={isSelected}
+              aria-controls="ideas-grid"
               onClick={() => setActiveTopic(topic.id)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                 isSelected
                   ? 'bg-purple-600 text-white shadow-sm'
                   : 'border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-purple-400'
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
+              <Icon className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{topic.label}</span>
             </button>
           );
@@ -117,7 +126,13 @@ export default function IdeasPage({ setActivePage }) {
       </div>
 
       {/* Ideas Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div 
+        id="ideas-grid" 
+        role="region" 
+        aria-label="Creative event ideas" 
+        aria-live="polite" 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {loading ? (
           <div className="col-span-full py-16 text-center space-y-3">
             <div className="w-10 h-10 mx-auto rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center animate-spin">

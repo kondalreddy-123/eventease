@@ -13,9 +13,7 @@ import {
   Utensils,
   Globe,
   Building,
-  Info,
-  ArrowRight,
-  Flame
+  ArrowRight
 } from 'lucide-react';
 import TiltCard from '../components/TiltCard';
 
@@ -79,7 +77,7 @@ export default function CreateEventPage({ setActivePage }) {
       {/* Page Header */}
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5" />
+          <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
           AI Event Architect
         </div>
         <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">
@@ -92,17 +90,17 @@ export default function CreateEventPage({ setActivePage }) {
 
       <TiltCard className="p-6 sm:p-10 bg-white dark:bg-slate-900 border border-purple-500/20 shadow-2xl backdrop-blur-xl">
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs">
+          <div role="alert" className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Step 1: Event Type Selector */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-3">
+          <fieldset>
+            <legend className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-3">
               1. Select Event Type
-            </label>
+            </legend>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { type: 'Wedding', label: 'Wedding Ceremony', icon: Heart, desc: 'Multi-day rituals, mandap decor, room blocks & royal catering.' },
@@ -116,7 +114,8 @@ export default function CreateEventPage({ setActivePage }) {
                     key={item.type}
                     type="button"
                     onClick={() => setEventType(item.type)}
-                    className={`p-4 rounded-2xl border text-left transition-all ${
+                    aria-pressed={isSelected}
+                    className={`p-4 rounded-2xl border text-left focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-all ${
                       isSelected
                         ? 'border-purple-600 bg-purple-500/10 dark:bg-purple-950/40 shadow-md ring-2 ring-purple-500/20'
                         : 'border-slate-200 dark:border-slate-800 hover:border-purple-400 bg-slate-50/50 dark:bg-slate-800/40'
@@ -125,7 +124,7 @@ export default function CreateEventPage({ setActivePage }) {
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${
                       isSelected ? 'bg-purple-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                     }`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-5 h-5" aria-hidden="true" />
                     </div>
                     <div className="font-bold text-sm text-slate-900 dark:text-white">{item.label}</div>
                     <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">{item.desc}</p>
@@ -133,22 +132,24 @@ export default function CreateEventPage({ setActivePage }) {
                 );
               })}
             </div>
-          </div>
+          </fieldset>
 
           {/* Step 2: Basic Details */}
           <div className="space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
               2. Basic Event Coordinates
-            </label>
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="event-name-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Event Name *
                 </label>
                 <input
+                  id="event-name-input"
                   type="text"
                   required
+                  aria-required="true"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={eventType === 'Wedding' ? 'e.g. Diya & Kabir’s Destination Wedding' : (eventType === 'Birthday' ? 'e.g. Maya’s 25th Sunset Soiree' : 'e.g. Annual Tech Community Conclave')}
@@ -157,14 +158,16 @@ export default function CreateEventPage({ setActivePage }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="event-date-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Target Event Date *
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                   <input
+                    id="event-date-input"
                     type="date"
                     required
+                    aria-required="true"
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
@@ -175,14 +178,16 @@ export default function CreateEventPage({ setActivePage }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="event-location-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   City / Location *
                 </label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  <MapPin className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                   <input
+                    id="event-location-input"
                     type="text"
                     required
+                    aria-required="true"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. Udaipur, Rajasthan or Bengaluru"
@@ -192,16 +197,18 @@ export default function CreateEventPage({ setActivePage }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="event-guest-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Expected Number of Guests *
                 </label>
                 <div className="relative">
-                  <Users className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  <Users className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                   <input
+                    id="event-guest-input"
                     type="number"
                     min="5"
                     max="5000"
                     required
+                    aria-required="true"
                     value={guestCount}
                     onChange={(e) => setGuestCount(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
@@ -214,7 +221,7 @@ export default function CreateEventPage({ setActivePage }) {
           {/* Step 3: Budget in INR */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+              <label htmlFor="event-budget-input" className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                 3. Total Budget in Indian Rupees (INR ₹)
               </label>
               <span className="text-sm font-extrabold text-purple-600 dark:text-purple-400">
@@ -223,12 +230,14 @@ export default function CreateEventPage({ setActivePage }) {
             </div>
 
             <div className="relative">
-              <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" />
+              <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
               <input
+                id="event-budget-input"
                 type="number"
                 min="10000"
                 step="5000"
                 required
+                aria-required="true"
                 value={totalBudget}
                 onChange={(e) => setTotalBudget(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white font-bold"
@@ -236,13 +245,14 @@ export default function CreateEventPage({ setActivePage }) {
             </div>
 
             {/* Quick chips */}
-            <div className="flex flex-wrap gap-2 pt-1">
+            <div className="flex flex-wrap gap-2 pt-1" role="group" aria-label="Quick budget presets">
               {budgetChips.map(chip => (
                 <button
                   key={chip.value}
                   type="button"
                   onClick={() => setTotalBudget(chip.value)}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold border transition-all ${
+                  aria-label={`Set budget to ${chip.label}`}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold border focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-all ${
                     Number(totalBudget) === chip.value
                       ? 'bg-purple-600 text-white border-purple-600'
                       : 'border-slate-200 dark:border-slate-800 hover:border-purple-400 text-slate-700 dark:text-slate-300'
@@ -256,16 +266,17 @@ export default function CreateEventPage({ setActivePage }) {
 
           {/* Step 4: Preferences & Vibe */}
           <div className="space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
               4. Event Aesthetics & Experience
-            </label>
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Palette className="w-3.5 h-3.5 text-purple-500" /> Preferred Theme & Decor
+                <label htmlFor="event-theme-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <Palette className="w-3.5 h-3.5 text-purple-500" aria-hidden="true" /> Preferred Theme & Decor
                 </label>
                 <input
+                  id="event-theme-input"
                   type="text"
                   value={theme}
                   onChange={(e) => setTheme(e.target.value)}
@@ -275,10 +286,11 @@ export default function CreateEventPage({ setActivePage }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Utensils className="w-3.5 h-3.5 text-purple-500" /> Food & Catering Preferences
+                <label htmlFor="event-food-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <Utensils className="w-3.5 h-3.5 text-purple-500" aria-hidden="true" /> Food & Catering Preferences
                 </label>
                 <input
+                  id="event-food-input"
                   type="text"
                   value={foodPreference}
                   onChange={(e) => setFoodPreference(e.target.value)}
@@ -290,10 +302,11 @@ export default function CreateEventPage({ setActivePage }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5 text-purple-500" /> Cultural / Regional Nuances
+                <label htmlFor="event-culture-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5 text-purple-500" aria-hidden="true" /> Cultural / Regional Nuances
                 </label>
                 <input
+                  id="event-culture-input"
                   type="text"
                   value={culturalPreference}
                   onChange={(e) => setCulturalPreference(e.target.value)}
@@ -303,10 +316,11 @@ export default function CreateEventPage({ setActivePage }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Building className="w-3.5 h-3.5 text-purple-500" /> Venue Preference
+                <label htmlFor="event-venue-select" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <Building className="w-3.5 h-3.5 text-purple-500" aria-hidden="true" /> Venue Preference
                 </label>
                 <select
+                  id="event-venue-select"
                   value={venuePreference}
                   onChange={(e) => setVenuePreference(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white cursor-pointer"
@@ -322,10 +336,11 @@ export default function CreateEventPage({ setActivePage }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="event-reqs-input" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Special Requirements & Accessibility Needs
               </label>
               <textarea
+                id="event-reqs-input"
                 rows={2}
                 value={specialRequirements}
                 onChange={(e) => setSpecialRequirements(e.target.value)}
@@ -339,18 +354,19 @@ export default function CreateEventPage({ setActivePage }) {
           <button
             type="submit"
             disabled={aiGenerating}
-            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold text-sm shadow-xl shadow-purple-500/25 transition-all hover:scale-[1.01] flex items-center justify-center gap-3 disabled:opacity-60"
+            aria-label="Generate Smart Event Plan with Gemini AI"
+            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white font-extrabold text-sm shadow-xl shadow-purple-500/25 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none transition-all hover:scale-[1.01] flex items-center justify-center gap-3 disabled:opacity-60"
           >
             {aiGenerating ? (
               <span className="flex items-center gap-2">
-                <span className="animate-spin text-lg">✨</span>
+                <span className="animate-spin text-lg" aria-hidden="true">✨</span>
                 Gemini AI is Generating Your Complete Event Plan...
               </span>
             ) : (
               <>
-                <Sparkles className="w-5 h-5 animate-pulse" />
+                <Sparkles className="w-5 h-5 animate-pulse" aria-hidden="true" />
                 <span>Generate Smart Event Plan with Gemini AI</span>
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </>
             )}
           </button>

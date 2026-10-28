@@ -88,8 +88,8 @@ export default function AuthPage({ setActivePage }) {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div role="alert" aria-live="assertive" className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>{error}</span>
             </div>
           )}
@@ -98,14 +98,16 @@ export default function AuthPage({ setActivePage }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'register' && (
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="auth-name" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                   <input
+                    id="auth-name"
                     type="text"
                     required
+                    aria-required="true"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Ananya Sharma"
@@ -116,14 +118,16 @@ export default function AuthPage({ setActivePage }) {
             )}
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="auth-email" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                 <input
+                  id="auth-email"
                   type="email"
                   required
+                  aria-required="true"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
@@ -133,14 +137,16 @@ export default function AuthPage({ setActivePage }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="auth-password" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" />
+                <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-600 dark:text-slate-400" aria-hidden="true" />
                 <input
+                  id="auth-password"
                   type="password"
                   required
+                  aria-required="true"
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -153,14 +159,16 @@ export default function AuthPage({ setActivePage }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.01] flex items-center justify-center gap-2"
+              aria-label={mode === 'login' ? 'Sign in to EventEase AI' : 'Create new account on EventEase AI'}
+              aria-busy={loading}
+              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg shadow-purple-500/25 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               {loading ? (
                 <span className="inline-block animate-spin">⏳</span>
               ) : (
                 <>
                   <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </>
               )}
             </button>
