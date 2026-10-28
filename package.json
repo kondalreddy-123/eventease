@@ -1,0 +1,15 @@
+{
+  "name": "eventease-ai",
+  "version": "1.0.0",
+  "description": "EventEase AI — Your Smart Event Planner (Powered by Google Gemini 3.8)",
+  "private": true,
+  "scripts": {
+    "start": "node server/src/server.js",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build"
+  },
+  "keywords": ["event-planning", "gemini-ai", "react", "recharts", "threejs", "budget-manager", "timeline"],
+  "author": "EventEase AI Team",
+  "license": "MIT"
+}
